@@ -8,12 +8,12 @@ seats = [x.strip() for x in content]
 
 
 # part 1
-def determine_seat(seat):
+def determine_seat(bsp_data):
     start_row = 0
     end_row = 127
     start_seat = 0
     end_seat = 7
-    for c in seat:
+    for c in bsp_data:
         if c == "F":
             keep_lower = math.floor((end_row + start_row)/2)
             end_row = keep_lower
