@@ -6,9 +6,6 @@ with open("input_11.txt") as f:
 
 seat_grid = [x.strip() for x in content]
 
-# for row in seat_grid:
-#     print(row)
-
 
 # part 1
 def check_seat_adjacency(seat_matrix, seat_position):
@@ -22,28 +19,24 @@ def check_seat_adjacency(seat_matrix, seat_position):
     if str(up_seat) != str(seat_position):
         if seat_matrix_copy[up_seat[0]][up_seat[1]] == "#":
             adj_seats += 1
-    # print("Up: " + str(up_seat) + " Same? " + str(str(up_seat) == str(seat_position)) + " Cnt: " + str(adj_seats))
     down_seat = seat_position[:]
     if down_seat[0] < num_rows:
         down_seat[0] += 1
     if str(down_seat) != str(seat_position):
         if seat_matrix_copy[down_seat[0]][down_seat[1]] == "#":
             adj_seats += 1
-    # print("Down: " + str(up_seat) + " Same? " + str(str(down_seat) == str(seat_position)) + " Cnt: " + str(adj_seats))
     left_seat = seat_position[:]
     if left_seat[1] > 0:
         left_seat[1] -= 1
     if str(left_seat) != str(seat_position):
         if seat_matrix_copy[left_seat[0]][left_seat[1]] == "#":
             adj_seats += 1
-    # print("Left: " + str(left_seat) + " Same? " + str(str(left_seat) == str(seat_position)) + " Cnt: " + str(adj_seats))
     right_seat = seat_position[:]
     if right_seat[1] < len_row:
         right_seat[1] += 1
     if str(right_seat) != str(seat_position):
         if seat_matrix_copy[right_seat[0]][right_seat[1]] == "#":
             adj_seats += 1
-    # print("Right: " + str(right_seat) + " Same? " + str(str(right_seat) == str(seat_position)) + " Cnt: " + str(adj_seats))
     up_right_diag = seat_position[:]
     # check if valid seat
     if up_right_diag[0] > 0 and up_right_diag[1] < len_row:
@@ -52,7 +45,6 @@ def check_seat_adjacency(seat_matrix, seat_position):
     if str(up_right_diag) != str(seat_position):
         if seat_matrix_copy[up_right_diag[0]][up_right_diag[1]] == "#":
             adj_seats += 1
-    # print("Up right diag: " + str(up_right_diag) + " Same? " + str(str(up_right_diag) == str(seat_position)) + " Cnt: " + str(adj_seats))
     up_left_diag = seat_position[:]
     if up_left_diag[0] > 0 and up_left_diag[1] > 0:
         up_left_diag[0] -= 1
@@ -60,8 +52,6 @@ def check_seat_adjacency(seat_matrix, seat_position):
     if str(up_left_diag) != str(seat_position):
         if seat_matrix_copy[up_left_diag[0]][up_left_diag[1]] == "#":
             adj_seats += 1
-    # print("Up Left diag: " + str(up_left_diag) + " Same? " + str(
-    #     str(up_left_diag) == str(seat_position)) + " Cnt: " + str(adj_seats))
     down_right_diag = seat_position[:]
     if down_right_diag[0] < num_rows and down_right_diag[1] < len_row:
         down_right_diag[0] += 1
@@ -69,8 +59,6 @@ def check_seat_adjacency(seat_matrix, seat_position):
     if str(down_right_diag) != str(seat_position):
         if seat_matrix_copy[down_right_diag[0]][down_right_diag[1]] == "#":
             adj_seats += 1
-    # print("Down right diag: " + str(down_right_diag) + " Same? " + str(
-    #     str(down_right_diag) == str(seat_position)) + " Cnt: " + str(adj_seats))
     down_left_diag = seat_position[:]
     if down_left_diag[0] < num_rows and down_left_diag[1] > 0:
         down_left_diag[0] += 1
@@ -78,8 +66,6 @@ def check_seat_adjacency(seat_matrix, seat_position):
     if str(down_left_diag) != str(seat_position):
         if seat_matrix_copy[down_left_diag[0]][down_left_diag[1]] == "#":
             adj_seats += 1
-    # print("Down left diag: " + str(down_left_diag) + " Same? " + str(
-    #     str(down_left_diag) == str(seat_position)) + " Cnt: " + str(adj_seats))
     return adj_seats
 
 
@@ -101,8 +87,6 @@ def run_simulation(curr_seats):
         new_row = ""
         for idx2, current_seat in enumerate(current_row):
             adj_count = check_seat_adjacency(curr_seats, [idx1, idx2])
-            # print("Seat position: " + str([idx1, idx2]))
-            # print("Adj count: " + str(adj_count))
             if current_seat == "L":
                 if adj_count == 0:
                     new_row = new_row + "#"
