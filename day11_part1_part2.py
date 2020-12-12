@@ -1,6 +1,3 @@
-from copy import deepcopy
-import json
-
 with open("input_11.txt") as f:
     content = f.readlines()
 
