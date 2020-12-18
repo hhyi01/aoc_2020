@@ -40,10 +40,10 @@ def count_active_neighbors(current_state, neighbors):
 def populate_initial_state(init_state):
     results = {}
     z = 0
-    for idx1, x in enumerate(initial_state):
-        for idx2, y in enumerate(initial_state[idx1]):
+    for idx1, x in enumerate(init_state):
+        for idx2, y in enumerate(init_state[idx1]):
             coord = json.dumps([idx1, idx2, z])
-            results[coord] = initial_state[idx1][idx2]
+            results[coord] = init_state[idx1][idx2]
     return results
 
 
@@ -67,7 +67,51 @@ def execute_cycle(previous_state):
     return next_grid_state
 
 
-initial_state = populate_initial_state(initial_state)
+# part 2
+def find_neighbors_v2(coordinates):
+    neighbors = []
+    x = coordinates[0]
+    y = coordinates[1]
+    z = coordinates[2]
+    w = coordinates[3]
+    for x, y, z, w in [(x+i, y+j, z+n, w+k) for i in (-1, 0, 1) for j in (-1, 0, 1) for n in (-1, 0, 1)
+                       for k in (-1, 0, 1) if i != 0 or j != 0 or n != 0 or k != 0]:
+        neighbors.append([x, y, z, w])
+    return neighbors
+
+
+def populate_initial_state_v2(init_state):
+    results = {}
+    z = 0
+    w = 0
+    for idx1, x in enumerate(init_state):
+        for idx2, y in enumerate(init_state[idx1]):
+            coord = json.dumps([idx1, idx2, z, w])
+            results[coord] = init_state[idx1][idx2]
+    return results
+
+
+def execute_cycle_v2(previous_state):
+    next_grid_state = previous_state.copy()
+    for c in previous_state:
+        current_c = json.loads(c)
+        adj_coord = find_neighbors_v2(current_c)
+        next_grid_state = add_neighbors(adj_coord, next_grid_state)
+
+    for c2 in next_grid_state:
+        c2_d = json.loads(c2)
+        neighborhood = find_neighbors_v2(c2_d)
+        active_n = count_active_neighbors(previous_state, neighborhood)
+        if next_grid_state[c2] == ".":
+            if active_n == 3:
+                next_grid_state[c2] = "#"
+        elif next_grid_state[c2] == "#":
+            if active_n < 2 or active_n > 3:
+                next_grid_state[c2] = "."
+    return next_grid_state
+
+
+initial_state = populate_initial_state_v2(initial_state)
 print(initial_state)
 
 cycles = {
@@ -77,12 +121,12 @@ cycles = {
 for i in range(0, 6):
     print("Cycle number: " + str(i))
     curr_state = cycles[i]
-    next_state = execute_cycle(curr_state)
+    next_state = execute_cycle_v2(curr_state)
     print("Next state: " + str(next_state))
     cycles[i+1] = next_state
     cnt = 0
-    for coordinates in next_state:
-        if next_state[coordinates] == "#":
+    for c in next_state:
+        if next_state[c] == "#":
             cnt += 1
     print("Active count after cycle: " + str(cnt))
 
